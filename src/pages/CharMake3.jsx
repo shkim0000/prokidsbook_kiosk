@@ -1,12 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import face from '../assets/img/face.svg';
-import {useLocation} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 
 const CharMake3 = () => {
+    const navigate = useNavigate();
 
-  const capture = () => {
-    window.location.href = "/char-make4";
-  }
     const location = useLocation();
     const state = location.state || {};
     console.log("3",state)
@@ -15,12 +13,17 @@ const CharMake3 = () => {
     const [capturedImage, setCapturedImage] = useState(null);
 
     useEffect(() => {
-        // 웹캠 시작
         async function startWebcam() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                videoRef.current.srcObject = stream;
-                await videoRef.current.play();
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+
+                    // metadata 로딩 후 play
+                    videoRef.current.onloadedmetadata = () => {
+                        videoRef.current.play();
+                    };
+                }
             } catch (err) {
                 console.error("웹캠 접근 실패:", err);
             }
@@ -28,55 +31,48 @@ const CharMake3 = () => {
 
         startWebcam();
 
-        // 컴포넌트 언마운트 시 스트림 정지
         return () => {
+            // 언마운트 시 스트림 정지
             if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+                videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
             }
         };
     }, []);
-
     // 사진 찍기
     const capturePhoto = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
 
-        // 캔버스 크기 비디오 크기에 맞춤
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        // ✔️ 실제 화면에 보이는 크기 기준으로 캔버스 설정
+        const width = video.clientWidth;
+        const height = video.clientHeight;
+
+        canvas.width = width;
+        canvas.height = height;
 
         const ctx = canvas.getContext("2d");
 
-        // 비디오 현재 프레임을 캔버스에 그림
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // 👉 현재 보이는 영상 프레임을 그대로 복사
+        ctx.drawImage(video, 0, 0, width, height);
 
-        // 얼굴 모양 이미지 오버레이 (원하는 위치와 크기로 조절 가능)
-        const overlayImg = new Image();
-        overlayImg.src = "/face-overlay.png"; // public 폴더에 이미지 위치
-
-        overlayImg.onload = () => {
-            // 예: 화면 가운데에 얼굴 모양 이미지 크기 150x150 픽셀로 오버레이
-            const x = (canvas.width - 150) / 2;
-            const y = (canvas.height - 150) / 2;
-            ctx.drawImage(overlayImg, x, y, 150, 150);
-
-            // 캡처된 이미지 dataURL 얻기
-            const dataUrl = canvas.toDataURL("image/png");
-            setCapturedImage(dataUrl);
-        };
+        // 👉 얼굴 오버레이 이미지는 캡처에 포함하지 않음
+        const dataUrl = canvas.toDataURL("image/png");
+        setCapturedImage(dataUrl);
+        navigate("/char-make4", {
+            state: {style:state.style,gender:state.gender,myImg:dataUrl}
+        });
     };
   return (
 
-    <div className="camera-wrap">
+    <div className="camera-wrap" style={{overflow:"hidden"}}>
 
       <p className="camera-info">정면 얼굴이 잘 나오게 촬영해 주세요</p>
-        <div style={{ position: "relative", width: "952", height: "1535" }}>
+        <div style={{ position: "relative", width: "1080", height: "calc(100% - 160px)", display: "flex", justifyContent:"center", alignItems:"center" }}>
             {/* 웹캠 비디오 */}
             <video
                 ref={videoRef}
-                width="952"
-                height="1535"
-                style={{ position: "absolute", top: 0, left: 0, zIndex: 1, objectFit: "cover" }}
+
+                style={{  top: 0, left: 0,  objectFit: "cover" , width: "1080", height: "100%"}}
                 muted
                 playsInline
             />
@@ -86,34 +82,22 @@ const CharMake3 = () => {
                 alt="face overlay"
                 style={{
                     position: "absolute",
-                    top: "50%",
+                    top: "60%",
                     left: "50%",
-                    width: 150,
-                    height: 150,
+                    width: 563,
+                    height: 664,
                     transform: "translate(-50%, -50%)",
                     pointerEvents: "none",
                     userSelect: "none",
-                    opacity: 0.7,
+                    opacity: 1,
                 }}
                 draggable={false}
             />
             {/* 캔버스는 숨겨놓음 (캡처용) */}
             <canvas ref={canvasRef} style={{ display: "none" }} />
-
-            {/*<button onClick={capturePhoto} style={{ position: "relative", marginTop: "500px" }}>*/}
-            {/*    사진 찍기*/}
-            {/*</button>*/}
-
-            {/*/!* 캡처된 이미지 보여주기 *!/*/}
-            {/*{capturedImage && (*/}
-            {/*    <div>*/}
-            {/*        <h3>캡처된 사진</h3>*/}
-            {/*        <img src={capturedImage} alt="Captured" width="320" />*/}
-            {/*    </div>*/}
-            {/*)}*/}
         </div>
       <div className="capture-area">
-        <button className="icon camera" onClick={capture} />
+        <button className="icon camera" onClick={capturePhoto} />
       </div>
     </div>
   )
