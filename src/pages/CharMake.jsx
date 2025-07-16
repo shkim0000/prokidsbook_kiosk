@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Title from "../components/Title.jsx";
 import Slider from "../components/Slider.jsx";
 import { Link } from "react-router";
@@ -12,6 +12,9 @@ const CharMake = () => {
     { name: "픽셀아트 스타일", imgName: "pixelart_style.png" },
   ];
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  console.log("ASdas", slideList[activeIndex])
   return (
     <div className="char-make">
       <Title titleText="캐릭터 만들기" percents={20} />
@@ -24,7 +27,9 @@ const CharMake = () => {
         centeredSlides={true}
         loop={true}
         height={690}
+        setActiveIndex={setActiveIndex}
       />
+      <p style={{fontSize: 40}}>{activeIndex}</p>
       <div className="btn-wrap">
         <Link to={"/char-make2"} className="btn contained">다음</Link>
       </div>

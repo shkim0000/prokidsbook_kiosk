@@ -11,6 +11,10 @@ const Slider = (props) => {
     groupedSlides.push(props.slideList.slice(i, i + 3)); // 3개씩 슬라이싱
   }
 
+  const handleSlideChange = (swiper) => {
+    props.setActiveIndex(swiper.realIndex);
+  };
+
   return (
     <Swiper
       modules={ [Navigation, Pagination] }
@@ -20,6 +24,7 @@ const Slider = (props) => {
       slidesPerView={ props.slidesPerView ? props.slidesPerView : 1 }
       centeredSlides={ props.centeredSlides ? props.centeredSlides : false }
       loop={props.loop ? props.loop : false}
+      onSlideChange={props.setActiveIndex ? handleSlideChange : false}
       className={props.className ? props.className : ''}
       style={{ height: props.height ? `${props.height}px` : 'auto' }}
     >
