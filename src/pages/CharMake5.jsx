@@ -42,7 +42,7 @@ const CharMake5 = () => {
             <input type="text" placeholder="이름을 입력해주세요" value={inputValue} onChange={(e) => textInput(e)} />
             <button className="icon remove" onClick={textRemove} />
           </label>
-          <p>0/10</p>
+          <p>0/3</p>
         </div>
         <div className="progress-bar">
           <span style={{ width: `${progressValue}%` }}></span>
