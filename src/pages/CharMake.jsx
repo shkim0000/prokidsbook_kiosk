@@ -29,9 +29,8 @@ const CharMake = () => {
         height={690}
         setActiveIndex={setActiveIndex}
       />
-      <p style={{fontSize: 40}}>{activeIndex}</p>
       <div className="btn-wrap">
-        <Link to={"/char-make2"} className="btn contained">다음</Link>
+        <Link to={"/char-make2"} state={{style:slideList[activeIndex].name}} className="btn contained">다음</Link>
       </div>
     </div>
   )

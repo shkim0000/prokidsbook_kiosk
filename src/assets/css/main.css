@@ -70,6 +70,7 @@ h3{font-size:48px;font-weight:700;text-align:center;line-height:1.4;margin-top:1
 
 .camera-info{height:160px;background:#29a7e1;display:flex;justify-content:center;align-items:center;color:#fff;font-size:38px;font-weight:700;text-align:center;}
 .capture-area{width:100%;height:calc(100vh - 160px);}
+.camera-wrap{height:100%;}
 .camera-wrap .face{position:absolute;bottom:360px;left:50%;transform:translateX(-50%);}
 .camera-wrap .camera{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);}
 .confirm-box{height:690px;display:flex;justify-content:center;align-items:center;flex-direction:column;}
