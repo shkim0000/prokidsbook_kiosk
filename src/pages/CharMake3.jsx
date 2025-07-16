@@ -66,60 +66,56 @@ const CharMake3 = () => {
         };
     };
   return (
-      <div className="camera-wrap">
-          <p className="camera-info">정면 얼굴이 잘 나오게 촬영해 주세요</p>
 
-          <div
-              style={{
-                  position: "relative",
-                  width: "952px",
-                  height: "1535px",
-                  overflow: "hidden",
-                  backgroundColor: "transparent", // 배경 검정 없앰
-              }}
-          >
-              {/* 웹캠 비디오 */}
-              <video
-                  ref={videoRef}
-                  style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover", // 꽉 채우면서 비율 유지 (일부 잘림 발생)
-                      objectPosition: "center center", // 영상 중심 기준으로 위치 조정
-                      zIndex: 1,
-                  }}
-                  muted
-                  playsInline
-                  autoPlay
-              />
-              {/* 얼굴 모양 이미지 오버레이 */}
-              <img
-                  src={`${face}`}
-                  alt="face overlay"
-                  style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      width: 150,
-                      height: 150,
-                      transform: "translate(-50%, -50%)",
-                      pointerEvents: "none",
-                      userSelect: "none",
-                      opacity: 0.7,
-                      zIndex: 2,
-                  }}
-                  draggable={false}
-              />
-              <canvas ref={canvasRef} style={{ display: "none" }} />
-          </div>
+    <div className="camera-wrap">
 
-          <div className="capture-area">
-              <button className="icon camera" onClick={capture} />
-          </div>
+      <p className="camera-info">정면 얼굴이 잘 나오게 촬영해 주세요</p>
+        <div style={{ position: "relative", width: "952", height: "1535" }}>
+            {/* 웹캠 비디오 */}
+            <video
+                ref={videoRef}
+                width="952"
+                height="1535"
+                style={{ position: "absolute", top: 0, left: 0, zIndex: 1, objectFit: "cover" }}
+                muted
+                playsInline
+            />
+            {/* 얼굴 모양 이미지 오버레이 (비디오 위) */}
+            <img
+                src={`${face}`}
+                alt="face overlay"
+                style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    width: 150,
+                    height: 150,
+                    transform: "translate(-50%, -50%)",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                    opacity: 0.7,
+                }}
+                draggable={false}
+            />
+            {/* 캔버스는 숨겨놓음 (캡처용) */}
+            <canvas ref={canvasRef} style={{ display: "none" }} />
+
+            {/*<button onClick={capturePhoto} style={{ position: "relative", marginTop: "500px" }}>*/}
+            {/*    사진 찍기*/}
+            {/*</button>*/}
+
+            {/*/!* 캡처된 이미지 보여주기 *!/*/}
+            {/*{capturedImage && (*/}
+            {/*    <div>*/}
+            {/*        <h3>캡처된 사진</h3>*/}
+            {/*        <img src={capturedImage} alt="Captured" width="320" />*/}
+            {/*    </div>*/}
+            {/*)}*/}
+        </div>
+      <div className="capture-area">
+        <button className="icon camera" onClick={capture} />
       </div>
+    </div>
   )
 }
 
