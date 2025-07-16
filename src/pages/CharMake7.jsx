@@ -9,6 +9,7 @@ const CharMake7 = () => {
     [
       { name: "선생님", status: false },
       { name: "경찰관", status: false },
+      { name: "소방관", status: false },
       { name: "의사", status: false },
       { name: "간호사", status: false },
       { name: "약사", status: false },
