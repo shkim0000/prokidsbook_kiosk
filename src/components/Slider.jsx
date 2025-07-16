@@ -15,6 +15,15 @@ const Slider = (props) => {
     props.setActiveIndex(swiper.realIndex);
   };
 
+  const handleMultiSlideChange = (name) => {
+    props.setBtnActive(true);
+    let list = props.slideList;
+    for(let i = 0; i < props.slideList.length; i++){
+      list[i].status = list[i].name === name;
+    }
+    props.setSlideList(list);
+  }
+
   return (
     <Swiper
       modules={ [Navigation, Pagination] }
@@ -34,7 +43,7 @@ const Slider = (props) => {
             <SwiperSlide key={index}>
               <div className="radio-wrap">
                 {group.map((item, subIndex) => (
-                  <label key={subIndex} onClick={() => {props.setBtnActive(true)}}>
+                  <label key={subIndex} onClick={() => {handleMultiSlideChange(item.name)}}>
                     <input type="radio" name="job"/>
                     <span>{item.name}</span>
                   </label>
