@@ -1,13 +1,57 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Title from "../components/Title.jsx";
-import {Link, useLocation} from "react-router";
+import {Link, useLocation, useNavigate} from "react-router";
 import alert from "../assets/img/icon_alert.svg";
+import axios from "axios";
+import {auth, getToken, messaging} from "../firebase.js";
+import { signInAnonymously } from "firebase/auth";
 
 const CharMake4 = () => {
     const location = useLocation();
     const state = location.state || {};
     const [popupOpen, setPopupOpen] = useState(false);
     console.log("4",state)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js")
+                .then(registration => {
+                    console.log("Service Worker registered:", registration);
+                    // 여기서 토큰 요청 등 이어서 실행 가능
+                })
+                .catch(err => {
+                    console.error("Service Worker registration failed:", err);
+                });
+        }
+    }, []); // 빈 deps 배열 → 컴포넌트 마운트 시 단 한 번만 실행
+
+    const checkImage= async ()=>{
+
+        try {
+            let timeStamp=Math.floor(Date.now() / 1000).toString();
+            const response = await axios.post('https://oyvlktmnpl.execute-api.ap-northeast-2.amazonaws.com/dev/character/image/check', {
+                image: state.myImg.replace("data:image/png;base64,", ""),
+                time_stamp: timeStamp,
+            },{
+                headers: {
+                    Authorization: `Bearer ${state.token}`,
+                    authorizer: `Bearer ${state.token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+
+            navigate("/char-make5", {
+                state: {style:state.style,gender:state.gender,myImg:state.myImg,nickname:state.nickname,token:state.token,timeStamp:timeStamp}
+            });
+            console.log("서버 응답:", response.data);
+        } catch (error) {
+            setPopupOpen(true)
+        }
+
+
+    }
   return (
     <>
       <div className="capture-confirm">
@@ -15,10 +59,11 @@ const CharMake4 = () => {
         <h3>아래 사진으로 캐릭터가 만들어져요!<br />얼굴이 잘 나왔는지 확인해 주세요.</h3>
         <div className="confirm-box">
           <div className="confirm-face"><img src={state.myImg} /></div>
-          <Link to={"/char-make3"} className="icon reset">다시 촬영하기</Link>
+          <Link to={"/char-make3"} state={{style:state.style,gender:state.gender}} className="icon reset">다시 촬영하기</Link>
         </div>
         <div className="btn-wrap">
-          <Link to={"/char-make5"} className="btn contained">다음</Link>
+            <button className="btn contained" onClick={checkImage}>다음</button>
+          {/*<Link to={"/char-make5"} state={{style:state.style,gender:state.gender,myImg:state.myImg}} className="btn contained">다음</Link>*/}
         </div>
       </div>
       <div className={`popup ${popupOpen ? "active" : ""}`}>

@@ -58,7 +58,7 @@ const Slider = (props) => {
             { props.slideList.map((item, index) => {
               return (
                 <SwiperSlide key={index} className="book-padges">
-                  <img src={`/src/assets/img/charStyle/${item.imgName}`} alt=""/>
+                  <img src={`${item.imgName}`} alt=""/>
                   <p>{item.name}</p>
                 </SwiperSlide>
               )

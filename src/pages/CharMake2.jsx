@@ -14,14 +14,14 @@ const CharMake2 = () => {
       <h3>성별을 선택해 주세요.</h3>
       <div className="radio-wrap" style={{ height: 690 }}>
         <label onClick={() => {
-            setGender("male")
+            setGender("boy")
             setBtnActive(true)
         }}>
           <input type="radio" name="sex" />
           <span>남자</span>
         </label>
         <label onClick={() => {
-            setGender("female")
+            setGender("girl")
             setBtnActive(true)
         }}>
           <input type="radio" name="sex" />
@@ -29,7 +29,7 @@ const CharMake2 = () => {
         </label>
       </div>
       <div className="btn-wrap">
-        <Link to={"/char-make3"} state={{style:state.style,gender:gender}} className={`btn contained ${btnActive ? "" : "disabled"}`}>다음</Link>
+        <Link to={"/char-make3"} state={{style:state.style,gender:gender,token:state.token,nickname:state.nickname}} className={`btn contained ${btnActive ? "" : "disabled"}`}>다음</Link>
       </div>
     </div>
   )

@@ -1,9 +1,110 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Title from "../components/Title.jsx";
+import {useLocation, useNavigate} from "react-router";
+import axios from "axios";
 
 const CharMake8 = () => {
   const [progressValue, setProgressValue] = useState(0);
+    const location = useLocation();
+    const state = location.state || {};
+    console.log("8",state)
 
+    const navigate = useNavigate();
+    const preProcess= async ()=>{
+        console.log("pre in")
+        let job="";
+        state.slideList.forEach(element => {
+            if(element.status){
+                job=element.name;
+            }
+        })
+        const response = await axios.post(import.meta.env.VITE_API_URL+'/api/user/book/create', {
+                "mode": null,
+                "theme": {
+                    "major": "직업 체험",
+                    "middle": job,
+                    "sub": job
+                },
+                "background": null,
+                "charc_no": state.charInfo.charc_no,
+                "character_datetime": 0,
+                "character_type": "0",
+                "name": state.name,
+                "age": "16",
+                "ver": "",
+                "source_type": "user"
+            }
+            ,{
+            headers: {
+                Authorization: `Bearer ${state.token}`,
+                authorizer: `Bearer ${state.token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        interval = setInterval(() => {
+
+            chkCharc(response.data.book_no); // 여기에 실행할 함수 넣기
+        }, 3000); // 10000ms = 10초
+    }
+    let interval;
+    let count=0;
+    const chkCharc= async (data)=>{
+        try{
+            const img=  await axios.get( import.meta.env.VITE_API_URL+"/api/user/book?book_no="+data+"&ver=",{
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${state.token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            if(img.data.book !== null){
+                clearInterval(interval)
+                // 캐릭터 생성 완료
+                setProgressValue(100)
+                const response = await axios.post(import.meta.env.VITE_API_URL+'/api/user/book/detail', {
+                        "request_user_id": img.data.book.user_id,
+                        "spc_cd": img.data.book.spc_cd,
+                        "book_no": img.data.book.book_no,
+                        "ver": "",
+                        "book_type": "share_book"
+                    }
+                    ,{
+                        headers: {
+                            Authorization: `Bearer ${state.token}`,
+                            authorizer: `Bearer ${state.token}`,
+                            "Content-Type": "application/json"
+                        }
+                    });
+                console.log(response.data)
+                navigate("/char-make9", {
+                    state: {book:img.data,detail:response.data,style:state.style,gender:state.gender,myImg:state.myImg,name:state.name,charcImg:state.charcImg,selImg:state.selImg,slideList:state.slideList,charInfo:state.charInfo,token:state.token}
+                });
+
+
+
+            }else{
+                count+=1;
+                if(count>=100)count=99;
+                setProgressValue(count)
+            }
+
+
+
+        }catch (e){
+            console.log(e)
+        }
+
+    }
+    const [hasInitialized, setHasInitialized] = useState(false);
+
+    useEffect(() => {
+        if (!hasInitialized) {
+            setHasInitialized(true);
+            console.log("pre before")
+            preProcess();
+        }
+    }, [hasInitialized]);
   return (
     <div className="make-final">
       <Title titleText="동화 만들기" percents={100} />

@@ -59,7 +59,7 @@ const CharMake3 = () => {
         const dataUrl = canvas.toDataURL("image/png");
         setCapturedImage(dataUrl);
         navigate("/char-make4", {
-            state: {style:state.style,gender:state.gender,myImg:dataUrl}
+            state: {style:state.style,gender:state.gender,myImg:dataUrl,token:state.token,nickname:state.nickname}
         });
     };
   return (
