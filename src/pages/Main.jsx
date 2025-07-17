@@ -26,17 +26,7 @@ const Main = () => {
         let tmpToken=await getIdTokenAfterAnonymousLogin()
         setToken(tmpToken)
         let tmpNickname=generateRandomString();
-        let token_gen=await axios.post( import.meta.env.VITE_API_URL+"/api/user/book/test",{
-            token:tmpToken,
-            nickname:tmpNickname,
-            uid:uid
-        },{
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${tmpToken}`,
-                "Content-Type": "application/json"
-            }
-        })
+
 
 
         const profileMake= await axios.post( import.meta.env.VITE_API_URL+"/api/user/profile/update",{
@@ -58,7 +48,7 @@ const Main = () => {
         // 익명 로그인 먼저 수행
         const user = auth.currentUser;
         if (user) {
-            const idToken = await user.getIdToken();
+            const idToken = await user.getIdToken(true);
             console.log("익명 로그인 후 ID 토큰:", idToken);
             return idToken;
         } else {
