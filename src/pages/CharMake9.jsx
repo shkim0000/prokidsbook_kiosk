@@ -46,7 +46,7 @@ const CharMake9 = () => {
             }
         })
 
-      await axios.post( "http://localhost:8080/kiosk/user/book/print",{
+      await axios.post( "http://localhost:8081/kiosk/user/book/print",{
           hope:job,
           name:state.name,
           charc_link:state.charInfo.img_url,
