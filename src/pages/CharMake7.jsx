@@ -65,7 +65,7 @@ const CharMake7 = () => {
         <Link to={"/char-make7_2"}  state={{...state,charInfo:charInfo}} className="btn">직접 입력하기</Link>
       </div>
       <div className="btn-wrap">
-        <Link to={"/char-make8"}  state={{style:state.style,gender:state.gender,myImg:state.myImg,name:state.name,charcImg:state.charcImg,selImg:state.selImg,0:slideList,charInfo:charInfo,token:state.token}} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
+        <Link to={"/char-make8"}  state={{style:state.style,gender:state.gender,myImg:state.myImg,name:state.name,charcImg:state.charcImg,selImg:state.selImg,slideList:slideList,charInfo:charInfo,token:state.token}} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
       </div>
     </div>
   )
