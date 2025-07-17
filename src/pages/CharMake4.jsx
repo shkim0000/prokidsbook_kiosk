@@ -70,7 +70,7 @@ const CharMake4 = () => {
         <div className="box">
           <img src={`${alert}`} alt="" />
           <h3>사진을 다시 찍어주세요.</h3>
-          <p>촬영 가이드선에 맞추어<br /> 정면 열굴이 잘 나오게 촬영해주세요.</p>
+          <p>촬영 가이드선에 맞추어<br /> 정면 얼굴이 잘 나오게 촬영해주세요.</p>
           <div className="btn-wrap">
             <button className="btn contained" onClick={() => setPopupOpen(false)}>확인</button>
           </div>

@@ -121,19 +121,10 @@ const CharMake8 = () => {
                 "Content-Type": "application/json"
             }
         })
-        setPrintComplete(true);
+
         setBtnActive(false);
 
-        interval= setInterval(() => {
 
-            if(count === 0){
-                clearInterval(interval)
-                navigate("/");
-            }else{
-                count--;
-                setMoveCount(count);
-            }
-        }, 1000);
     }
 
 
@@ -156,16 +147,13 @@ const CharMake8 = () => {
         <video src={`https://d1cjvpjhgs30xs.cloudfront.net/seocho.mp4`} autoPlay loop muted />
       </div>
         <div style={{margin:20}} className="btn-wrap">
-            {!printComplete ?
+
                 <>
                     <button onClick={printCard} className={`btn print ${bookno!=="" ? "" : "disabled"} ${!btnActive ? "" : "disabled"}`}>
                         {!btnActive ? "프린트하기" : "인쇄 중입니다..."}
                     </button>
-                </> :
-                <>
-                    <p className="move-count"><span>{moveCount}초</span> 후 처음 화면으로 돌아갑니다.</p>
                 </>
-            }
+
         </div>
     </div>
   )
