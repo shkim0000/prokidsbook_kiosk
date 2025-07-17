@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import Title from "../components/Title.jsx";
-import { Link } from "react-router";
+import {Link, useLocation} from "react-router";
 import Slider from "../components/Slider.jsx";
 
 const CharMake7_2 = () => {
   const [btnActive, setBtnActive] = useState(false);
-
+  const [slideList, setSlideList] = useState(false);
+    const location = useLocation();
+    const state = location.state || {};
+    console.log("7-2",state)
   const textInput = (e) => {
     const target = e.target.value;
     if(target === ""){
+        setSlideList([])
       setBtnActive(false);
     }else{
+        setSlideList([{ name: target, status: true }])
       setBtnActive(true);
     }
   }
@@ -25,7 +30,7 @@ const CharMake7_2 = () => {
         </label>
       </div>
       <div className="btn-wrap">
-        <Link to={"/char-make8"} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
+        <Link to={"/char-make8"} state={{...state,slideList:slideList}} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
       </div>
     </div>
   )

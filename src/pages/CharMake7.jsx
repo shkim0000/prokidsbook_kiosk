@@ -31,7 +31,7 @@ const CharMake7 = () => {
     console.log("7",state)
     const preProcess= async ()=>{
         const img=  await axios.post( import.meta.env.VITE_API_URL+"/api/user/charc/upscale",{
-            index: state.charcImg,
+            index: state.charcImg+1,
             name: state.name
         },{
             withCredentials: true,
@@ -60,12 +60,12 @@ const CharMake7 = () => {
         setBtnActive={setBtnActive}
         setSlideList={setSlideList}
       />
-{/*      <div className="input-change">
+      <div className="input-change">
         <p>원하는 직업이 없나요?</p>
-        <Link to={"/char-make7_2"} className="btn">직접 입력하기</Link>
-      </div>*/}
+        <Link to={"/char-make7_2"}  state={{...state,charInfo:charInfo}} className="btn">직접 입력하기</Link>
+      </div>
       <div className="btn-wrap">
-        <Link to={"/char-make8"}  state={{style:state.style,gender:state.gender,myImg:state.myImg,name:state.name,charcImg:state.charcImg,selImg:state.selImg,slideList:slideList,charInfo:charInfo,token:state.token}} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
+        <Link to={"/char-make8"}  state={{style:state.style,gender:state.gender,myImg:state.myImg,name:state.name,charcImg:state.charcImg,selImg:state.selImg,0:slideList,charInfo:charInfo,token:state.token}} className={`btn contained ${btnActive ? "" : "disabled"}`}>동화 만들러 가기</Link>
       </div>
     </div>
   )
