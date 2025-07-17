@@ -5,10 +5,12 @@ import axios from "axios";
 
 const CharMake8 = () => {
   const [progressValue, setProgressValue] = useState(0);
+    const [btnActive, setBtnActive] = useState(false);
+    const [moveCount, setMoveCount] = useState(3);
     const location = useLocation();
     const state = location.state || {};
     console.log("8",state)
-
+    const [printComplete, setPrintComplete] = useState(false);
     const navigate = useNavigate();
     const preProcess= async ()=>{
         console.log("pre in")
@@ -97,6 +99,42 @@ const CharMake8 = () => {
 
     }
     const [hasInitialized, setHasInitialized] = useState(false);
+    const printCard = async () => {
+        setBtnActive(true);
+        let job="";
+        state.slideList.forEach(element => {
+            if(element.status){
+                job=element.name;
+            }
+        })
+
+        await axios.post( "http://localhost:8080/kiosk/user/book/print",{
+            hope:job,
+            name:state.name,
+            charc_link:state.charInfo.img_url,
+            qr_link: "https://d2vhx1n0375jku.cloudfront.net/pdfs/"+state.detail.book_no+"/프로키즈북.pdf"
+        },{
+            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${state.token}`,
+                "Content-Type": "application/json"
+            }
+        })
+        setPrintComplete(true);
+        setBtnActive(false);
+
+        interval= setInterval(() => {
+
+            if(count === 0){
+                clearInterval(interval)
+                navigate("/");
+            }else{
+                count--;
+                setMoveCount(count);
+            }
+        }, 1000);
+    }
+
 
     useEffect(() => {
         if (!hasInitialized) {
@@ -116,6 +154,18 @@ const CharMake8 = () => {
       <div className="video-wrap">
         <video src={`https://d1cjvpjhgs30xs.cloudfront.net/seocho.mp4`} autoPlay loop muted />
       </div>
+        <div style={{margin:20}} className="btn-wrap">
+            {!printComplete ?
+                <>
+                    <button onClick={printCard} className={`btn print ${!btnActive ? "" : "disabled"}`}>
+                        {!btnActive ? "프린트하기" : "인쇄 중입니다..."}
+                    </button>
+                </> :
+                <>
+                    <p className="move-count"><span>{moveCount}초</span> 후 처음 화면으로 돌아갑니다.</p>
+                </>
+            }
+        </div>
     </div>
   )
 }
