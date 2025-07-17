@@ -36,6 +36,7 @@ const CharMake9 = () => {
         setSideList(storyList)
     }
     let count=3;
+    let interval;
     const printCard = async () => {
       setBtnActive(true);
         let job="";
@@ -60,9 +61,10 @@ const CharMake9 = () => {
         setPrintComplete(true);
         setBtnActive(false);
 
-        setInterval(() => {
+        interval= setInterval(() => {
 
             if(count === 0){
+                clearInterval(interval)
                 navigate("/");
             }else{
                 count--;
