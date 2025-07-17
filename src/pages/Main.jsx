@@ -10,6 +10,7 @@ import {auth} from "../firebase.js";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore 인스턴스
 const Main = () => {
+    const [btnActive, setBtnActive] = useState(false);
     function generateRandomString(length = 32) {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let result = '';
@@ -40,6 +41,7 @@ const Main = () => {
             }
         })
         setNickname(tmpNickname)
+        setBtnActive(true)
     }
     useEffect(()=>{
         preProcess()
@@ -76,7 +78,7 @@ const Main = () => {
         <img src={`${card}`} alt=""/>
       </div>
       <div className="btn-wrap">
-        <Link to={"/char-make"}  state={{token:token,nickname:nickname}} className="btn contained">나만의 AI 꿈 사원증 만들기</Link>
+        <Link to={"/char-make"}  state={{token:token,nickname:nickname}} className={`btn contained ${btnActive ? "" : "disabled"}`} >나만의 AI 꿈 사원증 만들기</Link>
       </div>
     </div>
   )
