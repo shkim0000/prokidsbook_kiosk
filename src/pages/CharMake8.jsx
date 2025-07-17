@@ -7,6 +7,7 @@ const CharMake8 = () => {
   const [progressValue, setProgressValue] = useState(0);
     const [btnActive, setBtnActive] = useState(false);
     const [moveCount, setMoveCount] = useState(3);
+    const [bookno,setBookno]=useState("")
     const location = useLocation();
     const state = location.state || {};
     console.log("8",state)
@@ -43,7 +44,7 @@ const CharMake8 = () => {
                 "Content-Type": "application/json"
             }
         });
-
+        setBookno(response.data.book_no)
         interval = setInterval(() => {
 
             chkCharc(response.data.book_no); // 여기에 실행할 함수 넣기
@@ -112,7 +113,7 @@ const CharMake8 = () => {
             hope:job,
             name:state.name,
             charc_link:state.charInfo.img_url,
-            qr_link: "https://d2vhx1n0375jku.cloudfront.net/pdfs/"+state.detail.book_no+"/프로키즈북.pdf"
+            qr_link: "https://d2vhx1n0375jku.cloudfront.net/pdfs/"+bookno+"/프로키즈북.pdf"
         },{
             withCredentials: true,
             headers: {
@@ -157,7 +158,7 @@ const CharMake8 = () => {
         <div style={{margin:20}} className="btn-wrap">
             {!printComplete ?
                 <>
-                    <button onClick={printCard} className={`btn print ${!btnActive ? "" : "disabled"}`}>
+                    <button onClick={printCard} className={`btn print ${bookno!=="" ? "" : "disabled"} ${!btnActive ? "" : "disabled"}`}>
                         {!btnActive ? "프린트하기" : "인쇄 중입니다..."}
                     </button>
                 </> :
