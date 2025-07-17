@@ -127,7 +127,8 @@ h3{font-size:48px;font-weight:700;text-align:center;line-height:1.4;margin-top:1
 .qr-wrap p{font-size:38px;font-weight:500;text-align:center;}
 .qr-wrap .qr{margin:10px 0;}
 .qr-wrap span{color:#676767;font-size:32px;font-weight:400;text-align:center;line-height:1.4;}
-.move-count{color:#28a8de;font-size:44px;font-weight:600;text-align:center;}
+.move-count{font-size:44px;font-weight:600;text-align:center;}
+.move-count span{color:#28a8de;}
 
 
 .popup{opacity:0;pointer-events:none;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;position:fixed;top:0;left:0;transition: opacity 300ms;}

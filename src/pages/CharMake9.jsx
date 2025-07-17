@@ -12,7 +12,7 @@ const CharMake9 = () => {
   const [btnActive, setBtnActive] = useState(false);
   const [qrImg, setQrImg] = useState("");
   const [printComplete, setPrintComplete] = useState(false);
-  const [moveCount, setMoveCount] = useState(0);
+  const [moveCount, setMoveCount] = useState(3);
   const [slideList,setSideList] =useState( [
       { name: " 리아와 친구들은 도서관에서 빛나는 책을 발견했어요. 호기심에 책을 펼친 순간 황금빛 글자들이 반짝이면서 속삭였어요. “세계를 푸르게 되돌리고 싶은 자여.....” 아이들은 책을 둘러싸고 읽기 시작했어요. 각 페이지마다 동물들과 자연의 이야기가 그려져 있었어요. “옛날에는 지구가 푸른색이라는 말이 거짓이 아니었어!” 책의 마지막 장에는 ‘마법의 씨앗을 찾으면 지구를 되돌릴 수 있다’는 이야기가 적혀있었어요.", imgName: "japanese_style.png" },
       { name: " 리아와 친구들은 도서관에서 빛나는 책을 발견했어요. 호기심에 책을 펼친 순간 황금빛 글자들이 반짝이면서 속삭였어요. “세계를 푸르게 되돌리고 싶은 자여.....” 아이들은 책을 둘러싸고 읽기 시작했어요. 각 페이지마다 동물들과 자연의 이야기가 그려져 있었어요. “옛날에는 지구가 푸른색이라는 말이 거짓이 아니었어!” 책의 마지막 장에는 ‘마법의 씨앗을 찾으면 지구를 되돌릴 수 있다’는 이야기가 적혀있었어요.", imgName: "japanese_style.png" },
@@ -35,6 +35,7 @@ const CharMake9 = () => {
         console.log(storyList)
         setSideList(storyList)
     }
+    let count=3;
     const printCard = async () => {
       setBtnActive(true);
         let job="";
@@ -58,13 +59,16 @@ const CharMake9 = () => {
       })
         setPrintComplete(true);
         setBtnActive(false);
-        setTimeout(() => {
-            setMoveCount(moveCount+1);
-        }, 1000);
 
-        if(moveCount >= 3){
-            navigate("/");
-        }
+        setInterval(() => {
+
+            if(count === 0){
+                navigate("/");
+            }else{
+                count--;
+                setMoveCount(count);
+            }
+        }, 1000);
     }
 
   return (
