@@ -145,7 +145,7 @@ setBtnActive(true)
       <div className={`popup ${popupOpen ? "active" : ""}`}>
         <div className="box">
           <img src={`${alert}`} alt="" />
-          <h3>캐릭터 생성 실패</h3>
+          <h3>인터넷 연결이 불안정 하여  캐릭터 생성 실패 했습니다</h3>
           <p>메인페이지로 돌아 갑니다.</p>
           <div className="btn-wrap">
             <button className="btn contained" onClick={() => {

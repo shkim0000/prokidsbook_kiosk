@@ -76,8 +76,8 @@ const CharMake4 = () => {
         <div className={`popup ${popupOpen2 ? "active" : ""}`}>
             <div className="box">
                 <img src={`${alert}`} alt="" />
-                <h3>사진을 다시 찍어주세요.</h3>
-                <p>메인 화면으로 돌아갑니다</p>
+                <h3>인터넷 연결을 확인해주세요.</h3>
+                <p>사진찍기를 다시 시도해주세요. 메인 화면으로 돌아갑니다</p>
                 <div className="btn-wrap">
                     <button className="btn contained" onClick={() => {
                         setPopupOpen2(false);

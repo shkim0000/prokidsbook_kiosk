@@ -175,17 +175,13 @@ const CharMake8 = () => {
         <div className={`popup ${popupOpen ? "active" : ""}`}>
             <div className="box">
                 <img src={`${alert}`} alt="" />
-                <h3>책 생성에 실패했습니다.</h3>
+                <h3>인터넷 연결이 불안정 하여 책 생성에 실패했습니다.</h3>
                 <p>새로고침 또는 메인페이지로 돌아 갑니다.</p>
                 <div className="btn-wrap">
                     <button className="btn contained" onClick={() => {
                         setPopupOpen(false);
-                        window.location.reload();
-                    }}>새로고침</button>
-                    <button className="btn contained" onClick={() => {
-                        setPopupOpen(false);
                         window.location.href = "http://localhost:5173";
-                    }}>메이페이지로</button>
+                    }}>메인페이지로</button>
                 </div>
             </div>
         </div>
