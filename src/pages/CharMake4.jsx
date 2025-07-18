@@ -10,6 +10,7 @@ const CharMake4 = () => {
     const location = useLocation();
     const state = location.state || {};
     const [popupOpen, setPopupOpen] = useState(false);
+    const [popupOpen2, setPopupOpen2] = useState(false);
     const [loading, setLoading] = useState(false);
     console.log("4",state)
     const navigate = useNavigate();
@@ -37,9 +38,11 @@ const CharMake4 = () => {
         } catch (error) {
             if(error.response){
                 let status = error.response.status;
-                if(status!==500){
-                    setPopupOpen(true)
-                }
+                 if(status===401){
+                    setPopupOpen2(true)
+                }else{
+                     setPopupOpen(true)
+                 }
             }
 
         }
@@ -70,6 +73,19 @@ const CharMake4 = () => {
           </div>
         </div>
       </div>
+        <div className={`popup ${popupOpen2 ? "active" : ""}`}>
+            <div className="box">
+                <img src={`${alert}`} alt="" />
+                <h3>사진을 다시 찍어주세요.</h3>
+                <p>메인 화면으로 돌아갑니다</p>
+                <div className="btn-wrap">
+                    <button className="btn contained" onClick={() => {
+                        setPopupOpen2(false);
+                        window.location.href="http://localhost:5173"
+                    }}>확인</button>
+                </div>
+            </div>
+        </div>
         <div className={`loading-progress ${loading ? "active" : ""}`}>
             <div></div>
         </div>
