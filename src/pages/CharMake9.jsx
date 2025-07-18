@@ -65,7 +65,7 @@ const CharMake9 = () => {
 
             if(count === 0){
                 clearInterval(interval)
-                navigate("/");
+                window.location.href="http://localhost:5173"
             }else{
                 count--;
                 setMoveCount(count);
