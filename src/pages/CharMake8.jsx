@@ -101,6 +101,8 @@ const CharMake8 = () => {
     }
     const [hasInitialized, setHasInitialized] = useState(false);
     const printCard = async () => {
+        let password=prompt("관리자 비밀번호 입력");
+        if(password!=="0630")return;
         setBtnActive(true);
         let job="";
         state.slideList.forEach(element => {
@@ -150,7 +152,7 @@ const CharMake8 = () => {
 
                 <>
                     <button onClick={printCard} className={`btn print ${bookno!=="" ? "" : "disabled"} ${!btnActive ? "" : "disabled"}`}>
-                        {!btnActive ? "프린트하기" : "인쇄 중입니다..."}
+                        {!btnActive ? "관리자 버튼" : "인쇄 중입니다..."}
                     </button>
                 </>
 
