@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Title from "../components/Title.jsx";
 import {Link, useLocation} from "react-router";
 import axios from "axios";
+import alert from "../assets/img/icon_alert.svg";
 
 const CharMake5 = () => {
   const [inputValue, setInputValue] = useState("");
@@ -10,6 +11,7 @@ const CharMake5 = () => {
   const [imgUrlList, setImgUrlList] = useState([]);
   const location = useLocation();
   const state = location.state || {};
+  const [popupOpen, setPopupOpen] = useState(false);
   const textInput = (e) => {
     const target = e.target.value;
    
@@ -32,23 +34,43 @@ const CharMake5 = () => {
   };
   const preProcess= async ()=>{
     console.log("preprocess")
-    interval = setInterval(() => {
 
-      chkCharc(); // 여기에 실행할 함수 넣기
-    }, 1000); // 10000ms = 10초
+    try {
+      const response = await axios.post(
+          import.meta.env.VITE_API_URL + "/api/user/charc/create",
+          {
+            gender: state.gender,
+            style: state.style,
+            time_stamp: state.timeStamp,
+             ver: "",
+          },
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+              "Content-Type": "application/json",
+            },
+          }
+      );
+      interval = setInterval(() => {
 
-    await axios.post( import.meta.env.VITE_API_URL+"/api/user/charc/create",{
-      gender:state.gender,
-      style:state.style,
-      time_stamp:state.timeStamp,
-      ver:"",
-    },{
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${state.token}`,
-        "Content-Type": "application/json"
+        chkCharc(); // 여기에 실행할 함수 넣기
+      }, 1000); // 10000ms = 10초
+
+      // 성공 시 처리
+      console.log("성공", response.data);
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        if(status!==200){
+          setPopupOpen(true);
+        }
+
+      } else {
+        // 네트워크 오류 또는 응답이 없는 경우
+        console.error("요청 실패:", error.message);
       }
-    })
+    }
 
   }
   let count=0;
@@ -68,6 +90,13 @@ const CharMake5 = () => {
 setBtnActive(true)
       setImgUrlList(img.data.img_url)
     }catch (e){
+      if(e.response){
+        let status = e.response.status;
+        if(status!==200 && status!==404){
+          clearInterval(interval)
+          setPopupOpen(true)
+        }
+      }
       count+=1;
       if(count>=100)count=99;
       setProgressValue(count)
@@ -113,7 +142,21 @@ setBtnActive(true)
       <div className="btn-wrap">
         <Link to={"/char-make6"} state={{style:state.style,gender:state.gender,myImg:state.myImg,name:inputValue,token:state.token,nickname:state.nickname,imgUrlList:imgUrlList}} className={`btn contained ${btnActive ? "" : "disabled"}`}>다음</Link>
       </div>
+      <div className={`popup ${popupOpen ? "active" : ""}`}>
+        <div className="box">
+          <img src={`${alert}`} alt="" />
+          <h3>캐릭터 생성 실패</h3>
+          <p>메인페이지로 돌아 갑니다.</p>
+          <div className="btn-wrap">
+            <button className="btn contained" onClick={() => {
+              setPopupOpen(false);
+              window.location.href = "http://localhost:5173";
+            }}>확인</button>
+          </div>
+        </div>
+      </div>
     </div>
+
   )
 }
 

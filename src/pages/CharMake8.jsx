@@ -8,6 +8,7 @@ const CharMake8 = () => {
     const [btnActive, setBtnActive] = useState(false);
     const [moveCount, setMoveCount] = useState(3);
     const [bookno,setBookno]=useState("")
+    const [popupOpen, setPopupOpen] = useState(false);
     const location = useLocation();
     const state = location.state || {};
     console.log("8",state)
@@ -21,34 +22,48 @@ const CharMake8 = () => {
                 job=element.name;
             }
         })
-        const response = await axios.post(import.meta.env.VITE_API_URL+'/api/user/book/create', {
-                "mode": null,
-                "theme": {
-                    "major": "직업 체험",
-                    "middle": job,
-                    "sub": job
-                },
-                "background": null,
-                "charc_no": state.charInfo.charc_no,
-                "character_datetime": 0,
-                "character_type": "0",
-                "name": state.name,
-                "age": "16",
-                "ver": "",
-                "source_type": "user"
-            }
-            ,{
-            headers: {
-                Authorization: `Bearer ${state.token}`,
-                authorizer: `Bearer ${state.token}`,
-                "Content-Type": "application/json"
-            }
-        });
-        setBookno(response.data.book_no)
-        interval = setInterval(() => {
+        try {
+            const response = await axios.post(import.meta.env.VITE_API_URL+'/api/user/book/create', {
+                    "mode": null,
+                    "theme": {
+                        "major": "직업 체험",
+                        "middle": job,
+                        "sub": job
+                    },
+                    "background": null,
+                    "charc_no": state.charInfo.charc_no,
+                    "character_datetime": 0,
+                    "character_type": "0",
+                    "name": state.name,
+                    "age": "16",
+                    "ver": "",
+                    "source_type": "user"
+                }
+                ,{
+                    headers: {
+                        Authorization: `Bearer ${state.token}`,
+                        authorizer: `Bearer ${state.token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+            setBookno(response.data.book_no)
+            interval = setInterval(() => {
 
-            chkCharc(response.data.book_no); // 여기에 실행할 함수 넣기
-        }, 3000); // 10000ms = 10초
+                chkCharc(response.data.book_no); // 여기에 실행할 함수 넣기
+            }, 3000);  // 10000ms = 10초
+        }catch (e) {
+            if (e.response) {
+                const status = e.response.status;
+                if(status!==200){
+                    setPopupOpen(true);
+                }
+
+            } else {
+                // 네트워크 오류 또는 응답이 없는 경우
+                console.error("요청 실패:", e.message);
+            }
+        }
+
     }
     let interval;
     let count=0;
@@ -156,6 +171,23 @@ const CharMake8 = () => {
                     </button>
                 </>
 
+        </div>
+        <div className={`popup ${popupOpen ? "active" : ""}`}>
+            <div className="box">
+                <img src={`${alert}`} alt="" />
+                <h3>책 생성에 실패했습니다.</h3>
+                <p>새로고침 또는 메인페이지로 돌아 갑니다.</p>
+                <div className="btn-wrap">
+                    <button className="btn contained" onClick={() => {
+                        setPopupOpen(false);
+                        window.location.reload();
+                    }}>새로고침</button>
+                    <button className="btn contained" onClick={() => {
+                        setPopupOpen(false);
+                        window.location.href = "http://localhost:5173";
+                    }}>메이페이지로</button>
+                </div>
+            </div>
         </div>
     </div>
   )

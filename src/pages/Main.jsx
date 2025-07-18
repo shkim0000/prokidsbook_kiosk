@@ -10,6 +10,18 @@ import {auth} from "../firebase.js";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore 인스턴스
 const Main = () => {
+    useEffect(() => {
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js")
+                .then(registration => {
+                    console.log("Service Worker registered:", registration);
+                    // 여기서 토큰 요청 등 이어서 실행 가능
+                })
+                .catch(err => {
+                    console.error("Service Worker registration failed:", err);
+                });
+        }
+    }, []); // 빈 deps 배열 → 컴포넌트 마운트 시 단 한 번만 실행
     const [btnActive, setBtnActive] = useState(false);
     function generateRandomString(length = 32) {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

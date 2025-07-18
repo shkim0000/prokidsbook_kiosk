@@ -23,7 +23,6 @@ const CharMake9 = () => {
       preProcess()
   },[])
     const preProcess= async ()=>{
-      console.log(state.detail)
         setQrImg(state.detail.qr_code_url)
         let storyList=[]
         for (const key in state.detail.story) {

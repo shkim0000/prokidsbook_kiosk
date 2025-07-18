@@ -10,24 +10,12 @@ const CharMake4 = () => {
     const location = useLocation();
     const state = location.state || {};
     const [popupOpen, setPopupOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     console.log("4",state)
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("/firebase-messaging-sw.js")
-                .then(registration => {
-                    console.log("Service Worker registered:", registration);
-                    // 여기서 토큰 요청 등 이어서 실행 가능
-                })
-                .catch(err => {
-                    console.error("Service Worker registration failed:", err);
-                });
-        }
-    }, []); // 빈 deps 배열 → 컴포넌트 마운트 시 단 한 번만 실행
-
     const checkImage= async ()=>{
-
+        setLoading(true);
         try {
             let timeStamp=Math.floor(Date.now() / 1000).toString();
             const response = await axios.post('https://oyvlktmnpl.execute-api.ap-northeast-2.amazonaws.com/dev/character/image/check', {
@@ -47,10 +35,16 @@ const CharMake4 = () => {
             });
             console.log("서버 응답:", response.data);
         } catch (error) {
-            setPopupOpen(true)
+            if(error.response){
+                let status = error.response.status;
+                if(status!==500){
+                    setPopupOpen(true)
+                }
+            }
+
         }
 
-
+        setLoading(false)
     }
   return (
     <>
@@ -76,6 +70,9 @@ const CharMake4 = () => {
           </div>
         </div>
       </div>
+        <div className={`loading-progress ${loading ? "active" : ""}`}>
+            <div></div>
+        </div>
     </>
   )
 }
