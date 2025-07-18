@@ -167,7 +167,7 @@ const CharMake8 = () => {
 
                 <>
                     <button onClick={printCard} className={`btn print ${bookno!=="" ? "" : "disabled"} ${!btnActive ? "" : "disabled"}`}>
-                        {!btnActive ? "관리자 버튼" : "인쇄 중입니다..."}
+                        {!btnActive ? "인쇄하기" : "인쇄 중입니다..."}
                     </button>
                 </>
 
