@@ -50,7 +50,7 @@ const CharMake8 = () => {
             interval = setInterval(() => {
 
                 chkCharc(response.data.book_no); // 여기에 실행할 함수 넣기
-            }, 5000);  // 10000ms = 10초
+            }, 6000);  // 10000ms = 10초
         }catch (e) {
             if (e.response) {
                 const status = e.response.status;
